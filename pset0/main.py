@@ -1,4 +1,5 @@
 import random
+import matplotlib.pyplot as plt
 
 
 # 4(a)
@@ -40,6 +41,46 @@ def simulate_flips_two(coin_type, num_flips):
     return sequence, posteriors
 
 
+# 4(c) and 4(d)
+def plot_likelihoods():
+    # Fair coin simulations
+    fair_posteriors_list = []
+    for _ in range(5):
+        _, post = simulate_flips_two("fair", 100)
+        fair_posteriors_list.append(post)
+
+    # Biased coin simulations
+    biased_posteriors_list = []
+    for _ in range(5):
+        _, post = simulate_flips_two("biased", 100)
+        biased_posteriors_list.append(post)
+
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
+
+    # Plot fair
+    for i, post in enumerate(fair_posteriors_list):
+        ax1.plot(range(1, 101), post, label=f"Simulation {i + 1}")
+    ax1.set_xlabel("Number of Flips")
+    ax1.set_ylabel("Posterior Probability of Biased Coin")
+    ax1.set_title("Evolution of Posterior Probability for Fair Coin Simulations (4(c))")
+    ax1.legend()
+    ax1.grid(True)
+
+    # Plot biased
+    for i, post in enumerate(biased_posteriors_list):
+        ax2.plot(range(1, 101), post, label=f"Simulation {i + 1}")
+    ax2.set_xlabel("Number of Flips")
+    ax2.set_ylabel("Posterior Probability of Biased Coin")
+    ax2.set_title(
+        "Evolution of Posterior Probability for Biased Coin Simulations (4(d))"
+    )
+    ax2.legend()
+    ax2.grid(True)
+
+    plt.tight_layout()
+    plt.show()
+
+
 def main():
     fair_sequences = []
     fair_posteriors = []
@@ -61,6 +102,8 @@ def main():
     # (closer to 0 = not biased, closer to 1 = biased)
     print(f"First fair posteriors (last 5): {fair_posteriors[0][-5:]}")
     print(f"First biased posteriors (last 5): {biased_posteriors[0][-5:]}")
+
+    plot_likelihoods()
 
 
 if __name__ == "__main__":
